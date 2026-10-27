@@ -1,0 +1,24 @@
+
+services:
+  - type: web
+    name: nexa-ai-studio
+    runtime: python
+    plan: starter
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn app:app --workers 2 --bind 0.0.0.0:$PORT
+    healthCheckPath: /health
+
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.12.8
+
+      - key: SECRET_KEY
+        generateValue: true
+
+      - key: DATA_DIR
+        value: /var/data
+
+    disk:
+      name: nexa-data
+      mountPath: /var/data
+      sizeGB: 1
