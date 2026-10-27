@@ -1,0 +1,110 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ project.title }} — NEXA{% endblock %}
+
+{% block content %}
+<div class="back-row">
+    <a href="{{ url_for('index') }}">← All projects</a>
+    <span class="status-dot">PROJECT SAVED</span>
+</div>
+
+<section class="project-hero">
+    <div class="eyebrow">
+        PROJECT {{ "%04d"|format(project.id) }} / CREATIVE BLUEPRINT
+    </div>
+
+    <h1>{{ project.title }}</h1>
+
+    <p>
+        {{ project.preset }}
+        <span class="separator">·</span>
+        Created {{ project.created_at }}
+    </p>
+</section>
+
+<div class="detail-grid">
+    <section class="panel detail-panel">
+        <div class="eyebrow">SOURCE FOOTAGE</div>
+
+        {% if project.filename %}
+            <video
+                class="video-preview"
+                controls
+                preload="metadata"
+                src="{{ url_for('uploaded_video', filename=project.filename) }}"
+            ></video>
+
+            <p class="muted file-name">{{ project.original_name }}</p>
+        {% else %}
+            <div class="video-placeholder">
+                <span>▶</span>
+                <strong>No source footage yet</strong>
+                <p>
+                    Return to the workspace to create a project
+                    with an uploaded video.
+                </p>
+            </div>
+        {% endif %}
+    </section>
+
+    <section class="panel detail-panel">
+        <div class="eyebrow">STYLE PROFILE</div>
+        <h2>{{ project.preset }}</h2>
+
+        <div class="profile-row">
+            <span>PACE</span>
+            <p>{{ presets[project.preset].pace }}</p>
+        </div>
+
+        <div class="profile-row">
+            <span>FORMAT</span>
+            <p>{{ presets[project.preset].format }}</p>
+        </div>
+
+        <div class="profile-row">
+            <span>LOOK</span>
+            <p>{{ presets[project.preset].look }}</p>
+        </div>
+
+        {% if project.brief %}
+            <div class="brief-box">
+                <span>YOUR CREATIVE BRIEF</span>
+                <p>{{ project.brief }}</p>
+            </div>
+        {% endif %}
+    </section>
+</div>
+
+<section class="section-heading">
+    <div>
+        <div class="eyebrow">AI ASSISTANT / PLANNING MODE</div>
+        <h2>Your editing blueprint</h2>
+    </div>
+
+    <span class="count">PLAN READY</span>
+</section>
+
+<div class="plan-list">
+    {% for task in plan %}
+        <div class="plan-item">
+            <span class="plan-number">
+                {{ "%02d"|format(loop.index) }}
+            </span>
+
+            <p>{{ task }}</p>
+            <span class="plan-check">◇</span>
+        </div>
+    {% endfor %}
+</div>
+
+<div class="notice">
+    <strong>About this version</strong>
+    <p>
+        This version saves projects and generates an editing plan.
+        Actual AI video generation, automatic captions, beat detection,
+        advanced effects, and rendered exports require additional
+        implementation.
+    </p>
+</div>
+{% endblock %}
