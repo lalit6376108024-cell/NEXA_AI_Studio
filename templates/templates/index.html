@@ -1,0 +1,128 @@
+
+{% extends "base.html" %}
+
+{% block content %}
+<section class="hero">
+    <div class="eyebrow">
+        <span class="pulse"></span> CREATIVE SYSTEM ONLINE
+    </div>
+
+    <h1>Your vision.<br><span>Reimagined.</span></h1>
+
+    <p class="hero-copy">
+        Turn raw footage into your next story. Choose a style,
+        describe your vision, and generate an editing blueprint.
+    </p>
+
+    <a class="button button-quiet" href="#new-project">
+        + Create a project
+    </a>
+
+    <div class="hero-orbit" aria-hidden="true">
+        <div class="orbit-ring ring-one"></div>
+        <div class="orbit-ring ring-two"></div>
+        <div class="orbit-core">N</div>
+    </div>
+</section>
+
+<section class="section-heading" id="new-project">
+    <div>
+        <div class="eyebrow">01 / START CREATING</div>
+        <h2>New project</h2>
+    </div>
+    <span class="muted">MP4 · MOV · WEBM · Up to 500 MB</span>
+</section>
+
+<form class="panel project-form" method="post" enctype="multipart/form-data">
+    <label>
+        Project name
+        <input
+            type="text"
+            name="title"
+            maxlength="100"
+            placeholder="e.g. Glacier sunrise — reel"
+        >
+    </label>
+
+    <label>
+        Editing style
+        <select name="preset">
+            {% for name in presets %}
+                <option value="{{ name }}">{{ name }}</option>
+            {% endfor %}
+        </select>
+    </label>
+
+    <label class="full">
+        Creative direction
+        <textarea
+            name="brief"
+            rows="3"
+            maxlength="2000"
+            placeholder="Describe the mood, audience, story, music, pacing, or references..."
+        ></textarea>
+    </label>
+
+    <label class="full upload-zone">
+        <span class="upload-icon">↥</span>
+        <span>
+            <strong>Upload source video</strong>
+            <small>Optional — choose a video from your device</small>
+        </span>
+        <input
+            type="file"
+            name="video"
+            accept="video/mp4,video/quicktime,video/webm,video/x-m4v,video/x-msvideo"
+        >
+    </label>
+
+    <div class="full form-footer">
+        <p class="muted">
+            Your project is saved with a style-based editing plan.
+        </p>
+        <button class="button" type="submit">
+            Build my blueprint <span>↗</span>
+        </button>
+    </div>
+</form>
+
+<section class="section-heading recent-heading">
+    <div>
+        <div class="eyebrow">02 / YOUR WORKSPACE</div>
+        <h2>Recent projects</h2>
+    </div>
+    <span class="count">{{ projects|length }} saved</span>
+</section>
+
+{% if projects %}
+    <div class="project-grid">
+        {% for item in projects %}
+            <a
+                class="project-card"
+                href="{{ url_for('project', project_id=item.id) }}"
+            >
+                <div class="card-top">
+                    <span class="project-symbol">✳</span>
+                    <span class="status-dot">SAVED</span>
+                </div>
+
+                <h3>{{ item.title }}</h3>
+                <p>{{ item.preset }}</p>
+
+                <div class="card-bottom">
+                    <span>{{ item.created_at }}</span>
+                    <span class="arrow">↗</span>
+                </div>
+            </a>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty-state">
+        <div class="empty-icon">◇</div>
+        <h3>Your next great edit starts here.</h3>
+        <p>
+            Create your first project above and it will appear here.
+        </p>
+    </div>
+{% endif %}
+{% endblock %}
