@@ -1,0 +1,49 @@
+
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#090c14">
+    <meta name="description" content="NEXA AI Video Studio — your creative editing workspace.">
+    <title>{% block title %}NEXA — AI Video Studio{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" href="{{ url_for('index') }}">
+        <span class="brand-mark">N</span>
+        <span>NEXA<small>AI VIDEO STUDIO</small></span>
+    </a>
+
+    <nav>
+        <a href="{{ url_for('index') }}">Workspace</a>
+        <a href="{{ url_for('index') }}#new-project">Create</a>
+    </nav>
+
+    <span class="system-status">
+        <span class="pulse"></span> STUDIO READY
+    </span>
+</header>
+
+<main class="container">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="flash-stack">
+                {% for category, message in messages %}
+                    <div class="flash {{ category }}">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+
+    {% block content %}{% endblock %}
+</main>
+
+<footer class="footer">
+    <span>© NEXA STUDIO</span>
+    <span>MAKE SOMETHING THAT MOVES YOU.</span>
+    <a href="{{ url_for('health') }}">System status</a>
+</footer>
+</body>
+</html>
